@@ -1,6 +1,6 @@
 import { dataBase } from "../config/dataBase";
 
-export async function aula(req,res){
+export async function getRentals(req,res){
     try {
         const receitas = await dataBase.query("SELECT * FROM receitas")
         res.send(receitas.rows)
@@ -8,3 +8,6 @@ export async function aula(req,res){
         res.status(500)
     }
 }
+export async function postRentals(req,res){}
+export async function postRentalsIdFinish(req,res){}
+export async function deleteRentalsId(req,res){}
