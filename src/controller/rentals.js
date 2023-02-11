@@ -2,8 +2,8 @@ import { dataBase } from "../config/dataBase";
 
 export async function getRentals(req,res){
     try {
-        const receitas = await dataBase.query("SELECT * FROM receitas")
-        res.send(receitas.rows)
+        const rentals = await dataBase.query("SELECT * FROM rentals")
+        res.send(rentals.rows)
     } catch (error) {
         res.status(500)
     }
