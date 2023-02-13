@@ -10,29 +10,21 @@ export async function getRentals(req, res) {
 }
 export async function postRentals(req, res) {
     const { customerId, gameId, daysRented } = req.body;
-
-    // Verifica se customerId se refere a um cliente existente
     const customer = await dataBase.query('SELECT * FROM customers WHERE id = $1;', [customerId]);
     if (customer.rowCount === 0) {
         return res.status(400).send('Customer does not exist');
     }
-
-    // Verifica se gameId se refere a um jogo existente
     const game = await dataBase.query('SELECT * FROM games WHERE id = $1;', [gameId]);
     if (game.rowCount === 0) {
         return res.status(400).send('Game does not exist');
     }
-
-    // Verifica se existem jogos disponíveis
     const availableGames = await dataBase.query('SELECT * FROM rentals WHERE "returnDate" IS NULL AND "gameId" = $1;', [gameId]);
     const availableQuantity = game.rows[0].stockTotal - availableGames.rowCount;
     if (availableQuantity <= 0) {
         return res.status(400).send('Game not available');
     }
-
     const rentDate = new Date();
     const originalPrice = game.rows[0].pricePerDay * daysRented;
-
     try {
         const result = await dataBase.query(
             'INSERT INTO rentals ("customerId", "gameId", "rentDate", "daysRented", "originalPrice") VALUES ($1, $2, $3, $4, $5);',
