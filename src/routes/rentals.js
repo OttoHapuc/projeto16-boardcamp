@@ -1,5 +1,11 @@
 import {Router} from 'express';
+import { deleteRentalsId, getRentals, postRentals, postRentalsIdFinish } from '../controller/rentals.js';
 
-const variavel = Router();
+const rentals = Router();
 
-export default variavel;
+rentals.get('/rentals', getRentals);
+rentals.post('/rentals', postRentals);
+rentals.post('/rentals/:id/return', postRentalsIdFinish);
+rentals.delete('/rentals/:id', deleteRentalsId);
+
+export default rentals;
